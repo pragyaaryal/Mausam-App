@@ -33,9 +33,11 @@ function updateClock() {
   setInterval(updateClock, 1000);
 
 
+
+  
 // Function to update the weather data based on the city name
 function updateWeatherData(cityName) {
-  const API_KEY = '3a449ca4202378f373da2d6f18fbf37e'; 
+  const API_KEY = '3a449ca4202378f373da2d6f18fbf37e';
   const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&units=metric&appid=${API_KEY}`;
 
   fetch(apiUrl)
@@ -43,11 +45,10 @@ function updateWeatherData(cityName) {
     .then(data => {
       // Update the HTML elements with the weather data
       document.querySelector('.temperature').innerHTML = `${Math.round(data.main.temp)}&deg;C`;
-      document.querySelector('.time-zone').innerHTML = data.name;
-      document.querySelector('.country').innerHTML = data.sys.country;
+      document.querySelector('.cityName_and_Country').innerHTML = `${data.name}, ${data.sys.country}`;
       document.querySelector('.weather-condition').innerHTML = data.weather[0].description;
       document.querySelector('.Humidity').innerHTML = `Humidity: ${data.main.humidity}%`;
-      document.querySelector('.Rain-fall').innerHTML = `Rainfall: ${data.rain ? data.rain['1h'] : 0} mm`; // Check if rainfall data is available
+      document.querySelector('.Rain-fall').innerHTML = `Rainfall: ${data.rain ? data.rain['1h'] : 0} mm`;
       document.querySelector('.Wind-Speed').innerHTML = `Wind speed: ${data.wind.speed} m/s`;
       document.querySelector('.Pressure').innerHTML = `Pressure: ${data.main.pressure} hPa`;
 
@@ -67,31 +68,42 @@ updateWeatherData('Huntsville');
 
 // Add event listener to the search button
 const searchBtn = document.querySelector('button[type="submit"]');
-const searchinput = document.querySelector('#search');
+const searchInput = document.querySelector('#search');
 
 searchBtn.addEventListener('click', () => {
-  const cityName = searchinput.value;
+  const cityName = searchInput.value;
   updateWeatherData(cityName);
 });
 
-searchnput.addEventListener('keydown', (event) => {
+searchInput.addEventListener('keydown', (event) => {
   if (event.key === 'Enter') {
-    const cityName = searchinput.value;
+    const cityName = searchInput.value;
     updateWeatherData(cityName);
   }
 });
 
-//to change the background image according to conditions
 
-function changeBackgroundImage(city) {
-  // make API call to fetch weather data for the city
-  fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=YOUR_API_KEY`)
+
+
+
+
+
+
+
+
+// Function to change background image based on weather condition 
+function changeBackgroundImage(cityName) {
+  // Set default city name to Huntsville if cityName is not provided
+  cityName = cityName || 'Huntsville';
+
+  // Make API call to fetch weather data for the city
+  fetch(`https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=3a449ca4202378f373da2d6f18fbf37e`)
     .then(response => response.json())
     .then(data => {
-      // get the weather condition from the API response
+      // Get the weather condition from the API response
       const weatherCondition = data.weather[0].main.toLowerCase();
 
-      // set the background image based on the weather condition
+      // Set the background image based on the weather condition
       switch (weatherCondition) {
         case 'clear':
           document.getElementById('background').src = 'clear.jpg';
@@ -112,12 +124,20 @@ function changeBackgroundImage(city) {
     .catch(error => console.log(error));
 }
 
-// call the changeBackgroundImage function when the page loads
+// Call the changeBackgroundImage function with default city "Huntsville" when the page loads
 window.onload = () => {
-  changeBackgroundImage('Huntsville');
+  changeBackgroundImage();
 };
 
-const searchInput = document.getElementById('search');
+
+
+
+
+
+
+//Channging image according to the city
+
+const searchInput2 = document.getElementById('search');
 const cityImage = document.querySelector('.cityimage img');
 
 // Function to fetch city image from Pexels API
@@ -134,9 +154,10 @@ async function fetchCityImage(city) {
 }
 
 // Event listener for search input
-searchInput.addEventListener('change', async (event) => {
+searchInput2.addEventListener('change', async (event) => {
   const city = event.target.value;
   const imageUrl = await fetchCityImage(city);
   cityImage.src = imageUrl;
 });
+
 
