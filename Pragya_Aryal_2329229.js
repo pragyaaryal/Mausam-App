@@ -86,11 +86,6 @@ searchInput.addEventListener('keydown', (event) => {
 
 
 
-
-
-
-
-
 // Function to change background image based on weather condition 
 function changeBackgroundImage(cityName) {
   // Set default city name to Huntsville if cityName is not provided
@@ -106,19 +101,19 @@ function changeBackgroundImage(cityName) {
       // Set the background image based on the weather condition
       switch (weatherCondition) {
         case 'clear':
-          document.getElementById('background').src = 'clear.jpg';
+          document.getElementById('background').src = 'Pragya_Aryal_22329229_clear.jpg';
           break;
         case 'clouds':
-          document.getElementById('background').src = 'cloudy.jpg';
+          document.getElementById('background').src = 'Pragya_Aryal_22329229_cloudy.jpg';
           break;
         case 'rain':
-          document.getElementById('background').src = 'rainy.jpg';
+          document.getElementById('background').src = 'Pragya_Aryal_22329229_rainy.jpg';
           break;
         case 'snow':
-          document.getElementById('background').src = 'snowy.jpg';
+          document.getElementById('background').src = 'Pragya_Aryal_22329229_snowy.jpg';
           break;
         default:
-          document.getElementById('background').src = 'default.jpg';
+          document.getElementById('background').src = 'Pragya_Aryal_22329229_default.jpg';
       }
     })
     .catch(error => console.log(error));
@@ -130,6 +125,29 @@ window.onload = () => {
 };
 
 
+
+
+// Get the search input field and search button
+const searchInput3 = document.querySelector('#search');
+const searchButton = document.querySelector('.search_bar button');
+
+// Add event listener to the search button to get the city name from the search bar and call the changeBackgroundImage function with that city name
+searchButton.addEventListener('click', () => {
+  const cityName = searchInput3.value;
+  changeBackgroundImage(cityName);
+});
+
+// Add event listener to the search input field for the "Enter" key
+searchInput3.addEventListener('keyup', event => {
+  if (event.key === 'Enter') {
+    const cityName = searchInput3.value;
+    changeBackgroundImage(cityName);
+  }
+});
+
+
+
+  
 
 
 
