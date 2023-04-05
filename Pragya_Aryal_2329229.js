@@ -1,36 +1,39 @@
 //To get live date, day and time
 function updateClock() {
-    // To get the current date and time
-    var now = new Date();
-  
-    // To fet the hours, minutes, and seconds
-    var hours = now.getHours();
-    var minutes = now.getMinutes();
-    var seconds = now.getSeconds();
-  
-    // To get the date components
-    var year = now.getFullYear();
-    var monthIndex = now.getMonth();
-    var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-    var monthName = monthNames[monthIndex];
-    var day = now.getDate();
-  
-    // To format the time string as hh:mm:ss
-    var timeString = hours.toString().padStart(2, '0') + ':' + minutes.toString().padStart(2, '0') + ':' + seconds.toString().padStart(2, '0');
-  
-    // To format the date string as Month Day, Year
-    var dateString = monthName + ' ' + day.toString().padStart(2, '0') + ', ' + year;
-  
-    // To update the clock and date elements with the formatted time and date strings
-    document.getElementById("time").innerHTML = timeString;
-    document.getElementById("date").innerHTML = dateString;
-  }
-  
-  // Call the updateClock function once to set the initial time and date
-  updateClock();
-  
-  // Refresh the clock and date every second using setInterval
-  setInterval(updateClock, 1000);
+  // To get the current date and time
+  var now = new Date();
+
+  // To get the hours, minutes, and seconds
+  var hours = now.getHours();
+  var minutes = now.getMinutes();
+  var seconds = now.getSeconds();
+
+  // To get the date components
+  var year = now.getFullYear();
+  var monthIndex = now.getMonth();
+  var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  var monthName = monthNames[monthIndex];
+  var day = now.getDate();
+  var dayIndex = now.getDay();
+  var dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  var dayName = dayNames[dayIndex];
+
+  // To format the time string as hh:mm:ss
+  var timeString = hours.toString().padStart(2, '0') + ':' + minutes.toString().padStart(2, '0') + ':' + seconds.toString().padStart(2, '0');
+
+  // To format the date string as Day, Month Day, Year
+  var dateString = dayName + ', ' + monthName + ' ' + day.toString().padStart(2, '0') + ', ' + year;
+
+  // To update the clock and date elements with the formatted time and date strings
+  document.getElementById("time").innerHTML = timeString;
+  document.getElementById("date").innerHTML = dateString;
+}
+
+// Call the updateClock function once to set the initial time and date
+updateClock();
+
+// Refresh the clock and date every second using setInterval
+setInterval(updateClock, 1000);
 
 
 
@@ -48,7 +51,7 @@ function updateWeatherData(cityName) {
       document.querySelector('.cityName_and_Country').innerHTML = `${data.name}, ${data.sys.country}`;
       document.querySelector('.weather-condition').innerHTML = data.weather[0].description;
       document.querySelector('.Humidity').innerHTML = `Humidity: ${data.main.humidity}%`;
-      document.querySelector('.Rain-fall').innerHTML = `Rainfall: ${data.rain ? data.rain['1h'] : 0} mm`;
+      document.querySelector('.Real_feels').innerHTML = `Feels like: ${Math.round(data.main.feels_like)}&deg;C`;
       document.querySelector('.Wind-Speed').innerHTML = `Wind speed: ${data.wind.speed} m/s`;
       document.querySelector('.Pressure').innerHTML = `Pressure: ${data.main.pressure} hPa`;
 

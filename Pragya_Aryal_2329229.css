@@ -17,7 +17,7 @@
     font-size: 60px;
     margin-left: 8%;
     margin-top: 2px;
-    font-family:sans-serif;
+    font-family: 'Playfair Display', serif;
 }
 
 #weathericon{
@@ -44,9 +44,11 @@
     border-radius:5px ;
     width: 1152px;
     height: 660px;
+   
 }
 
 .container{
+    /* font-family: 'Alkatra', cursive; */
     background-color: rgba(0, 0, 0, 0.2);
     position: absolute;
     display: flex;
@@ -138,7 +140,7 @@ button[type="submit"]:hover {
     background-color:rgb(66, 62, 62);
   }
 
-  .Humidity, .Wind-Speed, .Pressure, .Rain-fall {
+  .Humidity, .Wind-Speed, .Pressure, .Real_feels {
     text-align: center;
     padding: 8px;
     /* margin-top: 50px;
@@ -151,7 +153,7 @@ button[type="submit"]:hover {
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5); */
 }
 
-.Humidity_with_icon, .Rainfall_with_icon, .Windspeed_with_icon, .Pressure_with_icon{
+.Humidity_with_icon, .Realfeels_with_icon, .Windspeed_with_icon, .Pressure_with_icon{
     display: flex;
     margin: 3px;
     text-align: center;
@@ -159,7 +161,7 @@ button[type="submit"]:hover {
     margin-top: 50px;
     margin-left: 200px;
     margin-right: 50px;
-    font-size: 25px;
+    font-size: 30px;
     border: 1.5px solid black;
     border-radius: 5px;
     background-color: rgba(255, 255, 255, 0.5);
@@ -167,7 +169,7 @@ button[type="submit"]:hover {
 }
 
 
-.Humidity_with_icon img, .Rainfall_with_icon img, .Windspeed_with_icon img, .Pressure_with_icon img{
+.Humidity_with_icon img, .Realfeels_with_icon img, .Windspeed_with_icon img, .Pressure_with_icon img{
     width: 40px;
     color: white;
     padding-right: px;
@@ -175,7 +177,7 @@ button[type="submit"]:hover {
 footer{
     text-align: right;
     margin: 2%;
-    margin-top: 15%;
+    margin-top: 14%;
 }
 @media screen and (max-width: 768px) {
 
@@ -245,7 +247,7 @@ footer{
     padding: 0;
     }
     
-    .Humidity_with_icon, .Rainfall_with_icon, .Windspeed_with_icon, .Pressure_with_icon {
+    .Humidity_with_icon, .Realfeels_with_icon, .Windspeed_with_icon, .Pressure_with_icon {
     font-size: 20px;
     margin-top: 20px;
     margin-left: 100px;
@@ -253,7 +255,7 @@ footer{
     
     }
     
-    .Humidity_with_icon img, .Rainfall_with_icon img, .Windspeed_with_icon img, .Pressure_with_icon img {
+    .Humidity_with_icon img, .Realfeels_with_icon img, .Windspeed_with_icon img, .Pressure_with_icon img {
     width: 30px;
    
     }
