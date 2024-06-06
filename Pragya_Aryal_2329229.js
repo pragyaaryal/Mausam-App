@@ -29,61 +29,117 @@ function updateClock() {
   document.getElementById("date").innerHTML = dateString;
 }
 
-// Call the updateClock function once to set the initial time and date
+// Calling the updateClock function once to set the initial time and date
 updateClock();
 
-// Refresh the clock and date every second using setInterval
+// To refresh the clock and date every second using setInterval
 setInterval(updateClock, 1000);
 
 
 
+
+
   
-// Function to update the weather data based on the city name
+
+// Function to update weather data based on the provided city name
 function updateWeatherData(cityName) {
   const API_KEY = '3a449ca4202378f373da2d6f18fbf37e';
   const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&units=metric&appid=${API_KEY}`;
 
-  fetch(apiUrl)
-    .then(response => response.json())
-    .then(data => {
-      // Update the HTML elements with the weather data
-      document.querySelector('.temperature').innerHTML = `${Math.round(data.main.temp)}&deg;C`;
-      document.querySelector('.cityName_and_Country').innerHTML = `${data.name}, ${data.sys.country}`;
-      document.querySelector('.weather-condition').innerHTML = data.weather[0].description;
-      document.querySelector('.Humidity').innerHTML = `Humidity: ${data.main.humidity}%`;
-      document.querySelector('.Real_feels').innerHTML = `Feels like: ${Math.round(data.main.feels_like)}&deg;C`;
-      document.querySelector('.Wind-Speed').innerHTML = `Wind speed: ${data.wind.speed} m/s`;
-      document.querySelector('.Pressure').innerHTML = `Pressure: ${data.main.pressure} hPa`;
-
-      // Update the weather icon
-      const weatherIcon = document.querySelector('.weather_icon');
-      const iconUrl = `http://openweathermap.org/img/w/${data.weather[0].icon}.png`;
-      weatherIcon.innerHTML = `<img src="${iconUrl}" alt="Weather icon">`;
-    })
-    .catch(error => {
-      console.log(error);
-      alert('Unable to retrieve weather data. Please try again.');
-    });
+  // To check if weather data is available in localStorage
+  const weatherDataFromLocalStorage = getWeatherDataFromLocalStorage(cityName);
+  if (weatherDataFromLocalStorage) {
+    console.log(`Weather data for ${cityName} retrieved from local storage.`);
+    alert(`Weather data for ${cityName} retrieved from local storage.`);
+    updateWeatherUI(weatherDataFromLocalStorage);
+  } else {
+    console.log(`Weather data for ${cityName} fetched from API.`);
+    alert(`Weather data for ${cityName} fetched from API.`);
+    
+    // To fetch weather data from the OpenWeatherMap API
+    fetch(apiUrl)
+      .then(response => response.json())
+      .then(data => {
+        updateWeatherUI(data);
+        saveWeatherDataToLocalStorage(cityName, data);
+        changeBackgroundImage(cityName);
+      })
+      .catch(error => {
+        console.log(error);
+        alert('Unable to retrieve weather data. Please try again.');
+      });
+  }
 }
 
-// Call the updateWeatherData function with the default city name (Huntsville) when the page loads
-updateWeatherData('Huntsville');
+// Function to get weather data from localStorage
+function getWeatherDataFromLocalStorage(cityName) {
+  const weatherDataKey = `weatherData-${cityName}`;
+  const weatherData = localStorage.getItem(weatherDataKey);
+  if (weatherData) {
+    const parsedData = JSON.parse(weatherData);
+    const now = new Date().getTime();
+    
+    // To check if the data is less than an hour old (3600000 milliseconds)
+    if (now - parsedData.timestamp < 3600000) {
+      return parsedData.data;
+    }
+    
+    // To remove expired data from localStorage
+    localStorage.removeItem(weatherDataKey);
+  }
+  return null;
+}
+
+// Function to update the weather UI with the retrieved data
+function updateWeatherUI(data) {
+  document.querySelector('.temperature').innerHTML = `${Math.round(data.main.temp)}&deg;C`;
+  document.querySelector('.cityName_and_Country').innerHTML = `${data.name}, ${data.sys.country}`;
+  document.querySelector('.weather-condition').innerHTML = data.weather[0].description;
+  document.querySelector('.Humidity').innerHTML = `Humidity: ${data.main.humidity}%`;
+  document.querySelector('.Real_feels').innerHTML = `Feels like: ${Math.round(data.main.feels_like)}&deg;C`;
+  document.querySelector('.Wind-Speed').innerHTML = `Wind speed: ${data.wind.speed} m/s`;
+  document.querySelector('.Pressure').innerHTML = `Pressure: ${data.main.pressure} hPa`;
+
+  const weatherIcon = document.querySelector('.weather_icon');
+  const iconUrl = `http://openweathermap.org/img/w/${data.weather[0].icon}.png`;
+  weatherIcon.innerHTML = `<img src="${iconUrl}" alt="Weather icon">`;
+}
+
+// Function to save weather data to localStorage
+function saveWeatherDataToLocalStorage(cityName, data) {
+  const weatherDataKey = `weatherData-${cityName}`;
+  const weatherData = {
+    timestamp: new Date().getTime(),
+    data: data
+  };
+  localStorage.setItem(weatherDataKey, JSON.stringify(weatherData));
+  console.log(`Weather data for ${cityName} saved to local storage.`);
+}
+
+// Call the updateWeatherData function with the default city name (Kathmandu) when the page loads
+const defaultCity = 'Kathmandu';
+updateWeatherData(defaultCity);
 
 // Add event listener to the search button
 const searchBtn = document.querySelector('button[type="submit"]');
 const searchInput = document.querySelector('#search');
 
+// Event listener for button click
 searchBtn.addEventListener('click', () => {
   const cityName = searchInput.value;
   updateWeatherData(cityName);
 });
 
+// Event listener for Enter key press
 searchInput.addEventListener('keydown', (event) => {
   if (event.key === 'Enter') {
     const cityName = searchInput.value;
     updateWeatherData(cityName);
   }
 });
+
+
+
 
 
 
@@ -127,9 +183,6 @@ window.onload = () => {
   changeBackgroundImage();
 };
 
-
-
-
 // Get the search input field and search button
 const searchInput3 = document.querySelector('#search');
 const searchButton = document.querySelector('.search_bar button');
@@ -140,6 +193,7 @@ searchButton.addEventListener('click', () => {
   changeBackgroundImage(cityName);
 });
 
+
 // Add event listener to the search input field for the "Enter" key
 searchInput3.addEventListener('keyup', event => {
   if (event.key === 'Enter') {
@@ -149,8 +203,6 @@ searchInput3.addEventListener('keyup', event => {
 });
 
 
-
-  
 
 
 
@@ -179,6 +231,4 @@ searchInput2.addEventListener('change', async (event) => {
   const city = event.target.value;
   const imageUrl = await fetchCityImage(city);
   cityImage.src = imageUrl;
-});
-
-
+})
